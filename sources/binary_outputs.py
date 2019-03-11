@@ -53,8 +53,8 @@ def get_mag_binary(image, sobel_kernel=3, mag_thresh=(0, 255)):
     scaled_sobel = np.uint8(255*magn/np.max(magn))    
     return filter_by_threshold(arctan_sobel, thresh)
 
-def to_binary_image(init_img, binary):
+def to_binary_image(binary):
     mask_color = 255;
-    mask_img = np.full((init_img.shape[0],init_img.shape[1]), 0)
+    mask_img = np.full((binary.shape[0],binary.shape[1]), 0)
     mask_img[np.where(binary == 1)] = mask_color;    
     return mask_img;

@@ -10,7 +10,6 @@ class ImageWarper:
     def warp_image(self, img):
         img_size = (img.shape[1], img.shape[0]);
         warp_img = cv2.warpPerspective(img, self.transform_Matrix, img_size, flags=cv2.INTER_LINEAR)
-        plt.imshow(warp_img)
         return warp_img
         
         
