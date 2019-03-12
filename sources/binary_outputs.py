@@ -21,12 +21,25 @@ def get_sobel_binary(image,  threshold, orient='x'):
     scaled_sobel = np.uint8(255*abs_sobelx/np.max(abs_sobelx))   
     return filter_by_threshold(scaled_sobel, threshold)
 
+#hls s channel gradient
 def get_hls_s_binary(image, threshold):
     hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
     s_channel = hls[:,:,2]
     return filter_by_threshold(s_channel, threshold)
 
+#hls l channel gradient
+def get_hls_l_binary(image, threshold):
+    hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
+    l_channel = hls[:,:,1]
+    return filter_by_threshold(l_channel, threshold)
 
+#yellow and white color gradiens
+def get_yellow_binary(image,  threshold):
+    r_channel = image[:,:,0]
+    g_channel = image[:,:, 1]
+    return filter_by_threshold(r_channel, threshold) & filter_by_threshold(r_channel, threshold)
+
+#
 def get_dir_binary(image, sobel_kernel=3, thresh=(0, np.pi/2)):    
     # 1) Convert to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
@@ -51,7 +64,7 @@ def get_mag_binary(image, sobel_kernel=3, mag_thresh=(0, 255)):
     magn = np.sqrt(sobelx**2 + sobely**2)
     # 4) Scale to 8-bit (0 - 255) and convert to type = np.uint8
     scaled_sobel = np.uint8(255*magn/np.max(magn))    
-    return filter_by_threshold(arctan_sobel, thresh)
+    return filter_by_threshold(scaled_sobel, mag_thresh)
 
 def to_binary_image(binary):
     mask_color = 255;
