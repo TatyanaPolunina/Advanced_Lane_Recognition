@@ -39,8 +39,8 @@ class LaneDetector:
         return self.left_lane.radius_of_curvature, self.right_lane.radius_of_curvature
     
     def get_center_position(self, warped_image):
-        left_x = lines.get_x(self.left_lane.current_fit, warped_image.shape[0])
-        right_x = lines.get_x(self.right_lane.current_fit, warped_image.shape[0])
+        left_x = lines.get_x(self.left_lane.best_fit, warped_image.shape[0])
+        right_x = lines.get_x(self.right_lane.best_fit, warped_image.shape[0])
         return np.int((left_x + right_x) / 2);
     
     def get_offset(self, warped_image,  ym_per_image = 30, xm_per_image = 5.5):

@@ -1,4 +1,6 @@
 import lane_detection as ld
+
+import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 import lines
@@ -31,6 +33,7 @@ def get_model_polygon (img):
      [(img_size[0] * 5 / 6-50), 0]])
     return src, dst
 
+
 class ImageProcessor:
     camera_calibrator = []
     wrap_polygon = []
@@ -58,6 +61,12 @@ class ImageProcessor:
         if need_to_print_position:
             print("Curvature radius ", self.lane_detector.get_curvature(warp_img))
             print("Offset from center ", self.lane_detector.get_offset(warp_img), " meters")
+        warp_img = warper.warp_image(binary)
+        # View your output
+        self.lane_detector.find_next_poly(warp_img);
+        if need_to_print_position:
+            print("Curvature ", self.lane_detector.get_curvature(warp_img))
+            print("Center offset ", self.lane_detector.get_offset(warp_img), " meters")
         lane_boundaries = self.lane_detector.get_the_polygon_image(warp_img)
         # Warp the blank back to original image space using inverse perspective matrix (Minv)
         newwarp = self.inverted_warper.warp_image(lane_boundaries) 
