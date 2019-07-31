@@ -56,11 +56,23 @@ class ImageProcessor:
         # View your output
         self.lane_detector.find_next_poly(warp_img);
         if need_to_print_position:
-            print("Curvature ", self.lane_detector.get_curvature(warp_img))
-            print("Center offset ", self.lane_detector.get_offset(warp_img), " meters")
+            print("Curvature radius ", self.lane_detector.get_curvature(warp_img))
+            print("Offset from center ", self.lane_detector.get_offset(warp_img), " meters")
         lane_boundaries = self.lane_detector.get_the_polygon_image(warp_img)
         # Warp the blank back to original image space using inverse perspective matrix (Minv)
         newwarp = self.inverted_warper.warp_image(lane_boundaries) 
         # Combine the result with the original image 
+        topLeftCornerOfText = (10, 50);
+        text = "Curvature radius " + str(np.min(self.lane_detector.get_curvature(warp_img))) + ";"
+        cv2.putText(image, text, topLeftCornerOfText, cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 2)
+        offset = self.lane_detector.get_offset(warp_img);
+        if offset < 0:
+            dir_text = " left"            
+        else:
+            dir_text = " right"
+        text = "Center " +  str(np.abs(offset) ) + " meters" + dir_text
+
+        nextLineOfText = (10, 80);
+        cv2.putText(image, text, nextLineOfText, cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 2)
         result = cv2.addWeighted(image, 1, newwarp, 0.3, 0)
         return result;
